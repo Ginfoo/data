@@ -76,6 +76,7 @@ private:
 		edge* n_edge = static_cast<edge*>(malloc(sizeof(edge)));
 		n_edge->dest = d_pos;
 		n_edge->cost = cost;
+		n_edge->next = nullptr;
 		n_edge->next = this->verTable[s_pos].adj;
 		this->verTable[s_pos].adj = n_edge;
 		return true;
@@ -230,7 +231,7 @@ inline bool graph::insertVer(char s)
 		int s_pos = numVers;
 		this->verTable[s_pos].data = s;
 		this->verTable[s_pos].adj = nullptr;
-		this->numVers++;
+		this->numVers+=1;
 		return true;
 	}
 }
@@ -252,18 +253,18 @@ inline bool graph::removeEdge(char s, char d)
 
 inline bool graph::removeVer(char s)
 {
-	int s_pos = this->getVerPos(s);
+	int s_pos = this->getVerPos(s);//找到该定点位置
 	if (s_pos == -1)return false;
-	edge* t_cur_e = this->verTable[s_pos].adj;
-	while (t_cur_e != nullptr)
+	edge* t_cur_e = this->verTable[s_pos].adj;//指向该顶点的边
+	while (t_cur_e != nullptr)//边不为空
 	{
 		int d_pos = t_cur_e->dest;
 		if (this->g_type == GType::UDgrapg)//如果是无向图
-			removeOneWayEdge(d_pos, s_pos);
+			removeOneWayEdge(this->verTable[d_pos].data, this->verTable[s_pos].data);
 		edge* temp = t_cur_e;
 		this->verTable[s_pos].adj = t_cur_e->next;
-		free(temp);
 		t_cur_e = t_cur_e->next;
+		free(temp);
 	}
 	if (this->g_type == GType::Dgraph)//如果是有向图
 	{
@@ -273,7 +274,7 @@ inline bool graph::removeVer(char s)
 		}
 	}
 	//用最后一个顶点顶替该顶点
-	if (s_pos != numVers - 1)
+	if (s_pos != numVers - 1)//如果该顶点不是最后一个顶点
 	{
 		int old_pos = numVers - 1;
 		int new_pos = s_pos;
@@ -289,8 +290,10 @@ inline bool graph::removeVer(char s)
 				{
 					t_e->dest = new_pos;
 				}
+				t_e = t_e->next;
 			}
 		}
+		this->verTable[numVers].adj = nullptr;
 	}
 	return true;
 }
