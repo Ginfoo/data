@@ -61,57 +61,11 @@ private:
 	int maxVers;
 	int numVers;
 	ver* verTable;
-
-	bool insertOneWayEdge(char s, char d, int cost)
-	{
-		int s_pos = this->getVerPos(s);
-		int d_pos = this->getVerPos(d);
-		if (s_pos == -1 || d_pos == -1)return false;
-		edge* t_cur_e = this->verTable[s_pos].adj;
-		while (t_cur_e != nullptr)
-		{
-			if (t_cur_e->dest == d_pos)return false;
-			t_cur_e = t_cur_e->next;
-		}
-		edge* n_edge = static_cast<edge*>(malloc(sizeof(edge)));
-		n_edge->dest = d_pos;
-		n_edge->cost = cost;
-		n_edge->next = nullptr;
-		n_edge->next = this->verTable[s_pos].adj;
-		this->verTable[s_pos].adj = n_edge;
-		return true;
-	}
-
-	bool removeOneWayEdge(char s, char d)
-	{
-		int s_pos = this->getVerPos(s);
-		int d_pos = this->getVerPos(d);
-		edge* t_cur_e = this->verTable[s_pos].adj;
-		if (t_cur_e == nullptr)return false;
-		if (t_cur_e->dest == d_pos)
-		{
-			edge* temp = t_cur_e;
-			this->verTable[s_pos].adj = t_cur_e->next;
-			free(temp);
-			return true;
-		}
-		else
-		{
-			while (t_cur_e->next != nullptr)
-			{
-				if (t_cur_e->next->dest == d_pos)
-				{
-					edge* temp = t_cur_e->next;
-					t_cur_e->next = t_cur_e->next->next;
-					free(temp);
-					return true;
-				}
-				t_cur_e = t_cur_e->next;
-			}
-		}
-
-		return false;
-	}
+	bool insertOneWayEdge(const char s, const char d, const int cost);
+	bool insertOneWayEdge(int s_pos, int d_pos, int cost = 1);
+	bool removeOneWayEdge(int s_pos, int d_pos);
+	bool isSafePos(int pos) const;
+	bool removeOneWayEdge(char s, char d);
 };
 
 inline graph::graph(int maxVers, GType g_t): maxVers(maxVers), g_type(g_t), numVers(0)
@@ -231,7 +185,7 @@ inline bool graph::insertVer(char s)
 		int s_pos = numVers;
 		this->verTable[s_pos].data = s;
 		this->verTable[s_pos].adj = nullptr;
-		this->numVers+=1;
+		this->numVers += 1;
 		return true;
 	}
 }
@@ -305,4 +259,72 @@ inline int graph::getVerPos(char s) const
 		if (this->verTable[i].data == s)return i;
 	}
 	return -1;
+}
+
+inline bool graph::insertOneWayEdge(const char s, const char d, const int cost)
+{
+	const auto s_pos = this->getVerPos(s);
+	const auto d_pos = this->getVerPos(d);
+	return insertOneWayEdge(s_pos, d_pos, cost);
+}
+
+inline bool graph::insertOneWayEdge(int s_pos, int d_pos, int cost)
+{
+	if (!isSafePos(s_pos) || !isSafePos(d_pos))return false;
+	edge* t_edge = this->verTable[s_pos].adj;
+	while (t_edge != nullptr && t_edge->dest != d_pos)
+	{
+		t_edge = t_edge->next;
+	}
+	if (t_edge != nullptr)return false;
+	else
+	{
+		edge* e = static_cast<edge*>(malloc(sizeof(edge)));
+		e->dest = d_pos;
+		e->cost = cost;
+		e->next = this->verTable[s_pos].adj;
+		this->verTable[s_pos].adj = e;
+		return true;
+	}
+}
+
+inline bool graph::removeOneWayEdge(int s_pos, int d_pos)
+{
+	if (!isSafePos(s_pos) || isSafePos(d_pos))return false;
+	edge* t_edge = this->verTable[s_pos].adj;
+	edge* t_edge_prior = nullptr;//标记前一个节点
+	while (t_edge != nullptr && t_edge->dest != d_pos)
+	{
+		t_edge_prior = t_edge;
+		t_edge = t_edge->next;
+	}
+	if (t_edge == nullptr)return false;//没有找到 返回false
+	else
+	{
+		if (t_edge_prior == nullptr)//找到，但前一个节点为nullptr 说明该节点为首节点
+		{
+			this->verTable[s_pos].adj = t_edge->next;//链接该节点下一个
+			free(t_edge);
+		}
+		else
+		{
+			t_edge_prior->next = t_edge->next;
+			free(t_edge);
+		}
+		return true;
+	}
+}
+
+inline bool graph::isSafePos(int pos) const
+{
+	if (pos < 0 || pos > numVers - 1)return false;
+	return true;
+}
+
+inline bool graph::removeOneWayEdge(char s, char d)
+{
+	int s_pos = this->getVerPos(s);
+	int d_pos = this->getVerPos(d);
+
+	return removeEdge(s_pos, d_pos);
 }
