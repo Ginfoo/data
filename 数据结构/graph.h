@@ -38,24 +38,8 @@ public:
 
 	GType g_type;
 
-	friend ostream& operator<<(ostream& os, const graph& g)
-	{
-		if (g.g_type == GType::UDgrapg)
-			cout << "无向图:";
-		else
-			cout << "有向图:";
-		for (int i = 0; i < g.numVers; i++)
-		{
-			cout << endl << g.verTable[i].data << "    ";
-			edge* t_e = g.verTable[i].adj;
-			while (t_e != nullptr)
-			{
-				cout << t_e->dest << "(" << t_e->cost << ")     ";
-				t_e = t_e->next;
-			}
-		}
-		return os;
-	}
+	friend ostream& operator<<(ostream& os, const graph& g);
+
 
 private:
 	int maxVers;
@@ -66,7 +50,27 @@ private:
 	bool removeOneWayEdge(int s_pos, int d_pos);
 	bool isSafePos(int pos) const;
 	bool removeOneWayEdge(char s, char d);
+	bool removeVer(int s_pos);
 };
+
+inline ostream& operator<<(ostream& os, const graph& g)
+{
+	if (g.g_type == graph::GType::UDgrapg)
+		cout << "无向图:";
+	else
+		cout << "有向图:";
+	for (int i = 0; i < g.numVers; i++)
+	{
+		cout << endl << g.verTable[i].data << "    ";
+		edge* t_e = g.verTable[i].adj;
+		while (t_e != nullptr)
+		{
+			cout << t_e->dest << "(" << t_e->cost << ")     ";
+			t_e = t_e->next;
+		}
+	}
+	return os;
+}
 
 inline graph::graph(int maxVers, GType g_t): maxVers(maxVers), g_type(g_t), numVers(0)
 {
@@ -327,4 +331,13 @@ inline bool graph::removeOneWayEdge(char s, char d)
 	int d_pos = this->getVerPos(d);
 
 	return removeEdge(s_pos, d_pos);
+}
+
+inline bool graph::removeVer(int s_pos)
+{
+	if (!isSafePos(s_pos))return false;
+	else
+	{
+		return true;
+	}
 }
