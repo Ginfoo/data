@@ -213,47 +213,8 @@ inline bool graph::removeVer(char s)
 {
 	int s_pos = this->getVerPos(s);//找到该定点位置
 	if (s_pos == -1)return false;
-	edge* t_cur_e = this->verTable[s_pos].adj;//指向该顶点的边
-	while (t_cur_e != nullptr)//边不为空
-	{
-		int d_pos = t_cur_e->dest;
-		if (this->g_type == GType::UDgrapg)//如果是无向图
-			removeOneWayEdge(this->verTable[d_pos].data, this->verTable[s_pos].data);
-		edge* temp = t_cur_e;
-		this->verTable[s_pos].adj = t_cur_e->next;
-		t_cur_e = t_cur_e->next;
-		free(temp);
-	}
-	if (this->g_type == GType::Dgraph)//如果是有向图
-	{
-		for (int i = 0; i < numVers; i++)
-		{
-			removeOneWayEdge(this->verTable[i].data, s);
-		}
-	}
-	//用最后一个顶点顶替该顶点
-	if (s_pos != numVers - 1)//如果该顶点不是最后一个顶点
-	{
-		int old_pos = numVers - 1;
-		int new_pos = s_pos;
-		this->verTable[new_pos].data = this->verTable[old_pos].data;
-		this->verTable[new_pos].adj = this->verTable[old_pos].adj;
-		numVers--;
-		for (int i = 0; i < numVers; i++)
-		{
-			edge* t_e = this->verTable[i].adj;
-			while (t_e != nullptr)
-			{
-				if (t_e->dest == old_pos)
-				{
-					t_e->dest = new_pos;
-				}
-				t_e = t_e->next;
-			}
-		}
-		this->verTable[numVers].adj = nullptr;
-	}
-	return true;
+	
+	return removeVer(s_pos);
 }
 
 inline int graph::getVerPos(char s) const
@@ -338,6 +299,53 @@ inline bool graph::removeVer(int s_pos)
 	if (!isSafePos(s_pos))return false;
 	else
 	{
+		/*
+		 * 删除该顶点出边
+		 * 删除该顶点的入边
+		 * 用最后一个顶点顶替该位置
+		 * 修改原指向最后一个顶点的边的dest
+		 */
+		int last_pos = numVers - 1;//最后一个顶点的下标
+		//删除该顶点的出边
+		edge* t_edge = this->verTable[s_pos].adj;
+		this->verTable[s_pos].adj = nullptr;//方便后面操作
+		edge* p;
+		while (t_edge != nullptr)
+		{
+			p = t_edge;
+			free(p);
+			t_edge = t_edge->next;
+		}
+		//删除该顶点的入边
+		for (int i = 0; i < numVers; i++)
+		{
+			removeOneWayEdge(i, s_pos);
+		}
+		numVers -= 1;
+
+		if (last_pos != s_pos)//如果删除的不是最后一个节点
+		{
+			//把最后一个节点转移到要删除的地方
+			this->verTable[s_pos].adj = this->verTable[last_pos].adj;
+			this->verTable[s_pos].data = this->verTable[last_pos].data;
+			this->verTable[last_pos].adj = nullptr;
+			//修改原指向last_pos的边
+			int new_pos = s_pos;
+			for (int i = 0; i < numVers; i++)
+			{
+				edge* c_edge = this->verTable[i].adj;
+				while (c_edge != nullptr)
+				{
+					if (c_edge->dest == last_pos)
+					{
+						c_edge->dest = new_pos;
+						break;
+					}
+					c_edge = c_edge->next;
+				}
+			}
+		}
+
 		return true;
 	}
 }
