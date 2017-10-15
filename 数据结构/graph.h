@@ -48,7 +48,7 @@ private:
 	bool insertOneWayEdge(const char s, const char d, const int cost);
 	bool insertOneWayEdge(int s_pos, int d_pos, int cost = 1);
 	bool removeOneWayEdge(int s_pos, int d_pos);
-	bool isSafePos(int pos) const;
+	bool isSafePos(int pos) const;
 	bool removeOneWayEdge(char s, char d);
 	bool removeVer(int s_pos);
 };
@@ -61,7 +61,7 @@ inline ostream& operator<<(ostream& os, const graph& g)
 		cout << "有向图:";
 	for (int i = 0; i < g.numVers; i++)
 	{
-		cout << endl << g.verTable[i].data << "    ";
+		cout << endl << i<<" : "<<g.verTable[i].data << "    ";
 		edge* t_e = g.verTable[i].adj;
 		while (t_e != nullptr)
 		{
@@ -213,7 +213,7 @@ inline bool graph::removeVer(char s)
 {
 	int s_pos = this->getVerPos(s);//找到该定点位置
 	if (s_pos == -1)return false;
-	
+
 	return removeVer(s_pos);
 }
 
@@ -255,7 +255,7 @@ inline bool graph::insertOneWayEdge(int s_pos, int d_pos, int cost)
 
 inline bool graph::removeOneWayEdge(int s_pos, int d_pos)
 {
-	if (!isSafePos(s_pos) || isSafePos(d_pos))return false;
+	if (!isSafePos(s_pos) || !isSafePos(d_pos))return false;
 	edge* t_edge = this->verTable[s_pos].adj;
 	edge* t_edge_prior = nullptr;//标记前一个节点
 	while (t_edge != nullptr && t_edge->dest != d_pos)
@@ -288,10 +288,10 @@ inline bool graph::isSafePos(int pos) const
 
 inline bool graph::removeOneWayEdge(char s, char d)
 {
-	int s_pos = this->getVerPos(s);
-	int d_pos = this->getVerPos(d);
+	int s_pos = this->getVerPos(s);//获取s 的下标
+	int d_pos = this->getVerPos(d);//获取d 的下标
 
-	return removeEdge(s_pos, d_pos);
+	return removeOneWayEdge(s_pos, d_pos);//调用私有函数
 }
 
 inline bool graph::removeVer(int s_pos)
@@ -313,8 +313,8 @@ inline bool graph::removeVer(int s_pos)
 		while (t_edge != nullptr)
 		{
 			p = t_edge;
-			free(p);
 			t_edge = t_edge->next;
+			free(p);
 		}
 		//删除该顶点的入边
 		for (int i = 0; i < numVers; i++)

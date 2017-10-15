@@ -11,6 +11,7 @@ int main()
 	createGraphFromTxt(g, filename);
 	cout << g << endl;
 	g.removeEdge('c', 'd');
+	cout << "É¾³ý±ßºó" << endl;
 	cout << g << endl;
 	g.removeVer('f');
 	cout << g << endl;
