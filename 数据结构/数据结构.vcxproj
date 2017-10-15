@@ -150,6 +150,7 @@
     <ClInclude Include="ds.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="tools.h" />
+    <ClInclude Include="vector.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="graph.txt" />
