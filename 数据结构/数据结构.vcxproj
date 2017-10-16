@@ -147,6 +147,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="algor.h" />
     <ClInclude Include="ds.h" />
     <ClInclude Include="graph.h" />
     <ClInclude Include="tools.h" />

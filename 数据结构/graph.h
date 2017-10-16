@@ -35,8 +35,33 @@ public:
 	bool removeEdge(char s, char d);
 	bool removeVer(char s);
 	int getVerPos(char s) const;
+	int getNumVers() const;
+	char getCharByPos(int pos) const;
 
-	GType g_type;
+	int getFirstNeighbor(int pos)const
+	{
+		if(isSafePos(pos))
+		{
+			edge* p = this->verTable[pos].adj;
+			if (p != nullptr)return p->dest;
+		}return -1;
+	}
+
+	int getNextNeighbor(int s_pos, int d_pos)const
+	{
+		if (isSafePos(s_pos))
+		{
+			edge* p = this->verTable[s_pos].adj;
+			while (p != nullptr && p->dest != d_pos)
+			{
+				p = p->next;
+			}
+			if (p != nullptr&&p->next != nullptr)return p->next->dest;
+		}
+		return -1;
+	}
+
+	GType g_type;//标志是有向图还是无向图
 
 	friend ostream& operator<<(ostream& os, const graph& g);
 
@@ -223,6 +248,16 @@ inline int graph::getVerPos(char s) const
 		if (this->verTable[i].data == s)return i;
 	}
 	return -1;
+}
+
+inline int graph::getNumVers() const
+{
+	return this->numVers;
+}
+
+inline char graph::getCharByPos(int pos) const
+{
+	return this->verTable[pos].data;
 }
 
 inline bool graph::insertOneWayEdge(const char s, const char d, const int cost)
