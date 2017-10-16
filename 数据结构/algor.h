@@ -4,7 +4,7 @@
  * 图的相关算法
  */
 void DFS(graph&, int s_pos, bool*&);
-inline void DFS(graph&g,char s)//深度优先搜索主程序
+inline void DFS(graph&g,const char s)//深度优先搜索主程序
 {
 	int s_pos = g.getVerPos(s);
 	int g_num = g.getNumVers();
