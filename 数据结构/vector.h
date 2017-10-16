@@ -80,6 +80,7 @@ vector& vector::operator=(const vector& v)
 	if (this->vec != nullptr)delete[] this->vec;
 	this->_capacity = v._capacity;
 	this->_size = v._size;
+	this->vec = new int[_capacity];
 	memcpy_s(this->vec, _capacity * 4, v.vec, v._capacity * 4);
 }
 
