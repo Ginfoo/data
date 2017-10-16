@@ -24,7 +24,7 @@ void run()
 		mtx.unlock();// this function will make mtx is available,
 		//and other threads that is being blocked will detect the mtx is available
 		// but the others don't mean that all of them can detect the mtx is available because if one detect it and it will lock it.
-		// only the one thread will own the mtx 
+		// only the one thread will own the mtx
 		//here the function unlock is necessary
 	}
 }

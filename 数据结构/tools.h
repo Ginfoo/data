@@ -16,7 +16,7 @@ inline void createGraphFromTxt(graph& g, string fileName)
 	ifstream ifs(fileName.c_str());
 	set<char> vers;
 	char a[30];
-	while (ifs.peek()!='\n')
+	while (ifs.peek() != '\n')
 	{
 		ifs.get(a, 2);
 		vers.insert(a[0]);
@@ -37,7 +37,7 @@ inline void createGraphFromTxt(graph& g, string fileName)
 		}
 		if (ifs.good())
 		{
-			ifs.get(a, 3,'\n');
+			ifs.get(a, 3, '\n');
 			edge.first = a[0];
 			edge.second = a[1];
 			edges.insert(edge);

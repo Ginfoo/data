@@ -40,7 +40,6 @@ public:
 
 	friend ostream& operator<<(ostream& os, const graph& g);
 
-
 private:
 	int maxVers;
 	int numVers;
@@ -61,7 +60,7 @@ inline ostream& operator<<(ostream& os, const graph& g)
 		cout << "有向图:";
 	for (int i = 0; i < g.numVers; i++)
 	{
-		cout << endl << i<<" : "<<g.verTable[i].data << "    ";
+		cout << endl << i << " : " << g.verTable[i].data << "    ";
 		edge* t_e = g.verTable[i].adj;
 		while (t_e != nullptr)
 		{
@@ -72,7 +71,7 @@ inline ostream& operator<<(ostream& os, const graph& g)
 	return os;
 }
 
-inline graph::graph(int maxVers, GType g_t): maxVers(maxVers), g_type(g_t), numVers(0)
+inline graph::graph(int maxVers, GType g_t) : maxVers(maxVers), g_type(g_t), numVers(0)
 {
 	this->verTable = new ver[maxVers];
 	for (int i = 0; i < maxVers; i++)
@@ -92,7 +91,7 @@ inline graph::graph(const graph& g)
 	for (int i = 0; i < maxVers; i++)
 	{
 		ver t_ver = this->verTable[i];
-		edge* t_cur_e = t_ver.adj;//这里疑问 
+		edge* t_cur_e = t_ver.adj;//这里疑问
 
 		edge* g_cur_e = g.verTable[i].adj;
 		while (g_cur_e != nullptr)
