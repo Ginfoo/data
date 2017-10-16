@@ -28,7 +28,7 @@ private:
 	int _capacity;
 };
 
-ostream& operator<<(ostream& os, const vector& v)
+inline ostream& operator<<(ostream& os, const vector& v)
 {
 	os << endl << "Êä³ö£º " << endl;
 	for (int i = 0; i < v._size; i++)
@@ -82,6 +82,7 @@ vector& vector::operator=(const vector& v)
 	this->_size = v._size;
 	this->vec = new int[_capacity];
 	memcpy_s(this->vec, _capacity * 4, v.vec, v._capacity * 4);
+	return *this;
 }
 
 void vector::reserve(const int min_capacity)
