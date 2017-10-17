@@ -150,6 +150,8 @@
     <ClInclude Include="algor.h" />
     <ClInclude Include="ds.h" />
     <ClInclude Include="graph.h" />
+    <ClInclude Include="queue.h" />
+    <ClInclude Include="stack.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="vector.h" />
   </ItemGroup>

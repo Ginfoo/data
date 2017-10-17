@@ -5,7 +5,7 @@
 #include "tools.h"
 #include "vector.h"
 #include "algor.h"
-
+#include "stack.h"
 int main()
 {
 	graph g(30);
@@ -14,14 +14,14 @@ int main()
 	cout << g << endl;
 
 	DFS(g,'a');
-	//	g.removeEdge('c', 'd');
-	//	cout << "删除边后" << endl;
-	//	cout << g << endl;
-	//	g.removeVer('f');
-	//	cout << g << endl;
-	//	vector v(5, 3);
-	//	cout << v << endl;
-	//	vector s(2);
-	//	s = v;
-	//	cout << s;
+	cout <<endl<< " 广度优先搜索" << endl;
+	BFS(g, 'a');
+	cout << endl;
+	
+	stack<int> s(3);
+	s.push(3);
+	s.push(2);
+	s.push(4);
+	s.push(6);
+	cout << endl << s << endl;
 }
