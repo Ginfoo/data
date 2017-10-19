@@ -6,6 +6,8 @@
 #include "vector.h"
 #include "algor.h"
 #include "stack.h"
+const int maxSize = 10;
+
 int main()
 {
 	graph g(30);
@@ -13,15 +15,32 @@ int main()
 	createGraphFromTxt(g, filename);
 	cout << g << endl;
 
-	DFS(g,'a');
-	cout <<endl<< " 广度优先搜索" << endl;
+	DFS(g, 'a');
+	cout << endl << " 广度优先搜索" << endl;
 	BFS(g, 'a');
 	cout << endl;
-	
+
 	stack<int> s(3);
 	s.push(3);
 	s.push(2);
 	s.push(4);
 	s.push(6);
 	cout << endl << s << endl;
+
+	srand(3);
+	int a[maxSize];
+	for (int i = 0; i < maxSize; i++)
+	{
+		a[i] = rand() % 100;
+		cout << a[i] << " ";
+	}
+	vector v(a, maxSize);
+	cout << endl;
+	for (int i = 0; i < maxSize; i++)
+	{
+		cout << v[i] << "==";
+	}
+	cout << endl << v << endl;
+	insertSort(v);
+	cout << endl << v << endl;
 }

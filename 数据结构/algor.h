@@ -1,5 +1,6 @@
 #pragma once
 #include "graph.h"
+#include "vector.h"
 #include <memory>
 /*
  * 图的相关算法
@@ -51,7 +52,7 @@ inline void BFS(graph& g, const char s)
 
 	//开始访问
 	visited[s_pos] = true;
-	cout << g.getCharByPos(s_pos)<<" ";
+	cout << g.getCharByPos(s_pos) << " ";
 
 	//借助队列
 	int queue[30];
@@ -62,23 +63,46 @@ inline void BFS(graph& g, const char s)
 	queue[rear] = s_pos;
 	rear = (rear + 1) % 30;
 
-	while(rear!=front)
+	while (rear != front)
 	{
 		//出队操作
 		int cur_pos = queue[front];
-		front = (front + 1) % 30;  
+		front = (front + 1) % 30;
 		//
 		int w = g.getFirstNeighbor(cur_pos);
-		while(w!=-1)
+		while (w != -1)
 		{
-			if(visited[w]==false)
+			if (visited[w] == false)
 			{
-				cout << g.getCharByPos(w)<<" ";
+				cout << g.getCharByPos(w) << " ";
 				visited[w] = true;
 				queue[rear] = w;
 				rear = (rear + 1) % 30;
 			}
 			w = g.getNextNeighbor(s_pos, w);
+		}
+	}
+}
+
+//排序算法
+//插入类排序
+void insertSort(vector& v)
+{
+	int left = 0;
+	int right = v.size() - 1;
+	for (int i = left + 1; i <= right; i++)
+	{
+		if (v[i] < v[i - 1])//如果当前待插入的比前一个小
+		{
+			int key = v[i];//当前的给key
+			int j = i - 1;  //前一个下标
+			do
+			{
+				v[j + 1] = v[j];
+				j = j - 1;
+			}
+			while (j >= left && key < v[j]);
+			v[j + 1] = key;
 		}
 	}
 }

@@ -11,6 +11,7 @@ public:
 	vector(const vector& v);
 	vector(vector&&) = delete;
 	vector(int size, int vlaue);
+	vector(int* es, int len);
 	vector& operator=(const vector& v);
 	vector& operator=(vector&&) = delete;
 
@@ -21,6 +22,8 @@ public:
 	void pop_back();
 	void erase(int pos);
 	void insert(int e, int pos);
+
+	int& operator[](int)const;
 	friend ostream& operator<<(ostream& os, const vector& v);
 private:
 	int* vec;
@@ -38,14 +41,14 @@ inline ostream& operator<<(ostream& os, const vector& v)
 	return os;
 }
 
-vector::vector(int size) : _size(size)
+inline vector::vector(int size) : _size(size)
 {
 	_capacity = size + size / 3;
 	this->vec = new int[_capacity];
 	memset(this->vec, 0x00, 4 * _capacity);
 }
 
-vector::vector(int size, int vlaue)
+inline vector::vector(int size, int vlaue)
 {
 	this->_capacity = size + size / 3;
 	this->_size = size;
@@ -56,7 +59,15 @@ vector::vector(int size, int vlaue)
 	}
 }
 
-vector::vector(const vector& v)
+inline vector::vector(int* es, int len)
+{
+	this->_size = len;
+	this->_capacity = len + len / 3;
+	this->vec = new int[_capacity];
+	memcpy_s(this->vec, len * sizeof(int), es, len * sizeof(int));
+}
+
+inline vector::vector(const vector& v)
 {
 	this->_capacity = v._capacity;
 	this->_size = v._size;
@@ -64,17 +75,17 @@ vector::vector(const vector& v)
 	memcpy_s(this->vec, 4 * _capacity, v.vec, 4 * _capacity);
 }
 
-int vector::size() const
+inline int vector::size() const
 {
 	return this->_size;
 }
 
-int vector::capacity() const
+inline int vector::capacity() const
 {
 	return this->_capacity;
 }
 
-vector& vector::operator=(const vector& v)
+inline vector& vector::operator=(const vector& v)
 {
 	if (this == &v)return *this;
 	if (this->vec != nullptr)delete[] this->vec;
@@ -85,7 +96,7 @@ vector& vector::operator=(const vector& v)
 	return *this;
 }
 
-void vector::reserve(const int min_capacity)
+inline void vector::reserve(const int min_capacity)
 {
 	if (min_capacity < this->_capacity) return;
 	else
@@ -100,7 +111,7 @@ void vector::reserve(const int min_capacity)
 	}
 }
 
-void vector::push_back(int e)
+inline void vector::push_back(int e)
 {
 	if (this->_size >= this->_capacity)
 	{
@@ -109,7 +120,7 @@ void vector::push_back(int e)
 	this->vec[_size++] = e;
 }
 
-void vector::pop_back()
+inline void vector::pop_back()
 {
 	if (this->_size != 0)
 		this->_size -= 1;
@@ -140,4 +151,14 @@ inline void vector::insert(int e, int pos)
 		this->vec[i] = this->vec[i - 1];
 	}
 	this->vec[pos] = e;
+}
+
+inline int& vector::operator[](int i)const
+{
+	if (i < 0 || i >= this->_size)
+	{
+		cout<<"下标 i="<<i<<" 越界 退出";
+		exit(1);
+	};
+	return this->vec[i];
 }
