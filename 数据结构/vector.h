@@ -4,34 +4,38 @@ using std::ostream;
 using std::cout;
 using std::endl;
 
+template <class T>
 class vector
 {
 public:
 	explicit vector(int size);
-	vector(const vector& v);
-	vector(vector&&) = delete;
-	vector(int size, int vlaue);
-	vector(int* es, int len);
-	vector& operator=(const vector& v);
-	vector& operator=(vector&&) = delete;
+	vector(const vector<T>& v);
+	vector(vector<T>&&) = delete;
+	vector(int size, T vlaue);
+	vector(T* es, int len);
+	vector& operator=(const vector<T>& v);
+	vector& operator=(vector<T>&&) = delete;
 
 	int size() const;
 	int capacity() const;
 	void reserve(int min_capacity);
-	void push_back(int e);
+	void push_back(T e);
 	void pop_back();
 	void erase(int pos);
-	void insert(int e, int pos);
+	void insert(T e, int pos);
 
-	int& operator[](int)const;
-	friend ostream& operator<<(ostream& os, const vector& v);
+	const T& operator[](int) const;
+	T& operator[](int);
+	template <class Ty>
+	friend ostream& operator<<(ostream& os, const vector<Ty>& v);
 private:
-	int* vec;
+	T* vec;
 	int _size;
 	int _capacity;
 };
 
-inline ostream& operator<<(ostream& os, const vector& v)
+template <class T>
+inline ostream& operator<<(ostream& os, const vector<T>& v)
 {
 	os << endl << "输出： " << endl;
 	for (int i = 0; i < v._size; i++)
@@ -41,77 +45,87 @@ inline ostream& operator<<(ostream& os, const vector& v)
 	return os;
 }
 
-inline vector::vector(int size) : _size(size)
+template <class T>
+inline vector<T>::vector(int size) : _size(size)
 {
 	_capacity = size + size / 3;
-	this->vec = new int[_capacity];
-	memset(this->vec, 0x00, 4 * _capacity);
+	this->vec = new T[_capacity];
+	memset(this->vec, 0x00, sizeof(T) * _capacity);
 }
 
-inline vector::vector(int size, int vlaue)
+template <class T>
+inline vector<T>::vector(int size, T vlaue)
 {
 	this->_capacity = size + size / 3;
 	this->_size = size;
-	this->vec = new int[_capacity];
+	this->vec = new T[_capacity];
 	for (int i = 0; i < _size; i++)
 	{
 		this->vec[i] = vlaue;
 	}
 }
 
-inline vector::vector(int* es, int len)
+template <class T>
+inline vector<T>::vector(T* es, int len)
 {
 	this->_size = len;
 	this->_capacity = len + len / 3;
-	this->vec = new int[_capacity];
-	memcpy_s(this->vec, len * sizeof(int), es, len * sizeof(int));
+	this->vec = new T[_capacity];
+	memcpy_s(this->vec, len * sizeof(T), es, len * sizeof(T));
 }
 
-inline vector::vector(const vector& v)
+template <class T>
+inline vector<T>::vector(const vector& v)
 {
 	this->_capacity = v._capacity;
 	this->_size = v._size;
-	this->vec = new int[_capacity];
-	memcpy_s(this->vec, 4 * _capacity, v.vec, 4 * _capacity);
+	this->vec = new T[_capacity];
+	memcpy_s(this->vec, sizeof(T) * _capacity, v.vec, sizeof(T) * _capacity);
 }
 
-inline int vector::size() const
+template <class T>
+inline int vector<T>::size() const
 {
 	return this->_size;
 }
 
-inline int vector::capacity() const
+template <class T>
+inline int vector<T>::capacity() const
 {
 	return this->_capacity;
 }
 
-inline vector& vector::operator=(const vector& v)
+template <class T>
+inline vector<T>& vector<T>::operator=(const vector<T>& v)
 {
 	if (this == &v)return *this;
 	if (this->vec != nullptr)delete[] this->vec;
 	this->_capacity = v._capacity;
 	this->_size = v._size;
-	this->vec = new int[_capacity];
-	memcpy_s(this->vec, _capacity * 4, v.vec, v._capacity * 4);
+	this->vec = new T[_capacity];
+	memcpy_s(this->vec, _capacity * sizeof(T), v.vec, v._capacity * sizeof(T));
 	return *this;
 }
 
-inline void vector::reserve(const int min_capacity)
+template <class T>
+inline void vector<T>::reserve(const int min_capacity)
 {
 	if (min_capacity < this->_capacity) return;
 	else
 	{
-		int* n_vec = new int[min_capacity];
+		int* n_vec = new T[min_capacity];
 		for (int i = 0; i < _size; i++)
 		{
 			n_vec[i] = vec[i];
 		}
 		delete[] vec;
+		this->vec = n_vec;
 		this->_capacity = min_capacity;
 	}
 }
 
-inline void vector::push_back(int e)
+template <class T>
+inline void vector<T>::push_back(T e)
 {
 	if (this->_size >= this->_capacity)
 	{
@@ -120,13 +134,15 @@ inline void vector::push_back(int e)
 	this->vec[_size++] = e;
 }
 
-inline void vector::pop_back()
+template <class T>
+inline void vector<T>::pop_back()
 {
 	if (this->_size != 0)
 		this->_size -= 1;
 }
 
-inline void vector::erase(int pos)
+template <class T>
+inline void vector<T>::erase(int pos)
 {
 	if (pos < 0 || pos >= _size)return;
 	else
@@ -139,7 +155,8 @@ inline void vector::erase(int pos)
 	}
 }
 
-inline void vector::insert(int e, int pos)
+template <class T>
+inline void vector<T>::insert(T e, int pos)
 {
 	if (pos < 0 || pos > _size - 1)return;
 	if (this->_size >= this->_capacity)
@@ -153,12 +170,26 @@ inline void vector::insert(int e, int pos)
 	this->vec[pos] = e;
 }
 
-inline int& vector::operator[](int i)const
+template <class T>
+inline const T& vector<T>::operator[](int i) const
 {
 	if (i < 0 || i >= this->_size)
 	{
-		cout<<"下标 i="<<i<<" 越界 退出";
+		cout << "下标 i=" << i << " 越界 退出";
 		exit(1);
 	};
 	return this->vec[i];
+}
+
+template <class T>
+T& vector<T>::operator[](int pos)
+{
+	// 这个写法的意思是 将指针this 转成 const 型指针 再对其*解引 
+	//return const_cast<T&>((*static_cast<const vector<T>*>(this))[pos]);
+
+	//这个是先对this 指针解引  再转成const 而且&直接引用该对象 
+	return const_cast<T&>(static_cast<const vector<T>&>(*this)[pos]);
+
+	//这个写法不不可取；先对this指针 解引，再转成const时 并不是&，所以会重新创建一个新对象
+	//return const_cast<T&>(static_cast<const vector<T>>(*this)[pos]);
 }

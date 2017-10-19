@@ -34,13 +34,18 @@ int main()
 		a[i] = rand() % 100;
 		cout << a[i] << " ";
 	}
-	vector v(a, maxSize);
+	vector<int> v(a, maxSize);
 	cout << endl;
 	for (int i = 0; i < maxSize; i++)
 	{
 		cout << v[i] << "==";
 	}
+	vector<int> v2(v);
 	cout << endl << v << endl;
 	insertSort(v);
 	cout << endl << v << endl;
+
+	//binaryInsertSort(v2);
+	shellSort(v2);
+	cout << v2 << endl;
 }

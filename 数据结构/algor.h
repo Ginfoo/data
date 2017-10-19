@@ -86,7 +86,9 @@ inline void BFS(graph& g, const char s)
 
 //排序算法
 //插入类排序
-void insertSort(vector& v)
+//直接插入
+template<class T>
+void insertSort(vector<T>& v)
 {
 	int left = 0;
 	int right = v.size() - 1;
@@ -95,7 +97,7 @@ void insertSort(vector& v)
 		if (v[i] < v[i - 1])//如果当前待插入的比前一个小
 		{
 			int key = v[i];//当前的给key
-			int j = i - 1;  //前一个下标
+			int j = i - 1; //前一个下标
 			do
 			{
 				v[j + 1] = v[j];
@@ -106,3 +108,62 @@ void insertSort(vector& v)
 		}
 	}
 }
+
+//折半插入
+template<class T>
+inline void binaryInsertSort(vector<T>& v)
+{
+	int left = 0;
+	int right = v.size() - 1;
+	for (int i = left + 1; i <= right; i++)
+	{
+		if (v[i] < v[i - 1])
+		{
+			int key = v[i];
+			int low = left;
+			int high = i - 1;
+			int mid;
+			while (low <= high)
+			{
+				mid = (low + high) / 2;
+				if (key < v[mid])high = mid - 1;
+				else low = mid + 1;
+			}
+			for (int k = i; k > low; k--)
+			{
+				v[k] = v[k - 1];
+			}
+			v[low] = key;
+		}
+	}
+}
+
+//希尔排序
+template<class T>
+void shellSort(vector<T>& v)
+{
+	int left = 0;
+	int right = v.size() - 1;
+	int gap = right - left + 1;
+	do
+	{
+		gap = gap / 3 + 1;
+		for (int i = left + gap; i <= right; i++)
+		{
+			if (v[i] < v[i - gap])
+			{
+				int key = v[i];
+				int j = i - gap;
+				do
+				{
+					v[j + gap] = v[j];
+					j = j - gap;
+				}
+				while (j >= 0 && key < v[j]);
+				v[j + gap] = key;
+			}
+		}
+	}
+	while (gap > 1);
+}
+//选择类排序
