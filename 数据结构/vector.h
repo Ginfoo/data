@@ -184,7 +184,7 @@ inline const T& vector<T>::operator[](int i) const
 template <class T>
 T& vector<T>::operator[](int pos)
 {
-	// 这个写法的意思是 将指针this 转成 const 型指针 再对其*解引 
+	//  这个写法的意思是 将指针this 转成 const 型指针 再对其*解引 
 	//return const_cast<T&>((*static_cast<const vector<T>*>(this))[pos]);
 
 	//这个是先对this 指针解引  再转成const 而且&直接引用该对象 
