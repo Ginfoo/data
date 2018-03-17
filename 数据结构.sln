@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "数据结构", "数据结构\数据结构.vcxproj", "{B14AD06B-134F-46D6-BA59-8FE3941699B7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "多线程", "多线程\多线程.vcxproj", "{B4CA35CC-15B5-4DF8-8ED9-130A05BA0FF4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "程序设计", "程序设计\程序设计.vcxproj", "{CE83C9AF-322E-4104-93A7-82623A869EC5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "递归算法", "递归算法\递归算法.vcxproj", "{265EE04D-1BCA-432C-9013-19A14C9F228A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,22 @@ Global
 		{B4CA35CC-15B5-4DF8-8ED9-130A05BA0FF4}.Release|x64.Build.0 = Release|x64
 		{B4CA35CC-15B5-4DF8-8ED9-130A05BA0FF4}.Release|x86.ActiveCfg = Release|Win32
 		{B4CA35CC-15B5-4DF8-8ED9-130A05BA0FF4}.Release|x86.Build.0 = Release|Win32
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Debug|x64.ActiveCfg = Debug|x64
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Debug|x64.Build.0 = Debug|x64
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Debug|x86.ActiveCfg = Debug|Win32
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Debug|x86.Build.0 = Debug|Win32
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Release|x64.ActiveCfg = Release|x64
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Release|x64.Build.0 = Release|x64
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Release|x86.ActiveCfg = Release|Win32
+		{CE83C9AF-322E-4104-93A7-82623A869EC5}.Release|x86.Build.0 = Release|Win32
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Debug|x64.ActiveCfg = Debug|x64
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Debug|x64.Build.0 = Debug|x64
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Debug|x86.ActiveCfg = Debug|Win32
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Debug|x86.Build.0 = Debug|Win32
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Release|x64.ActiveCfg = Release|x64
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Release|x64.Build.0 = Release|x64
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Release|x86.ActiveCfg = Release|Win32
+		{265EE04D-1BCA-432C-9013-19A14C9F228A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

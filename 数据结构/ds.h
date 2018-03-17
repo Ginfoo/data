@@ -6,7 +6,6 @@
 #endif // !VALUE_TYPE
 #include <iostream>
 typedef VALUE_TYPE value_type;
-
 typedef struct TreeNode
 {
 	value_type e;
